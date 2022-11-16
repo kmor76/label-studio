@@ -16,6 +16,20 @@ import json
 
 from datetime import timedelta
 from label_studio.core.utils.params import get_bool_env, get_env
+import ldap
+from django_auth_ldap.config import LDAPSearch, GroupOfNamesType
+
+# AUTH_LDAP_SERVER_URI = 'ldap://109.120.191.105:10389'
+AUTH_LDAP_SERVER_URI = 'ldap://localhost:10389'
+
+AUTH_LDAP_BIND_DN = 'uid=admin,ou=system'
+AUTH_LDAP_BIND_PASSWORD = 'secret'
+AUTH_LDAP_USER_SEARCH = LDAPSearch(
+    'ou=users,ou=system',
+    ldap.SCOPE_SUBTREE,
+    '(uid=%(user)s)',
+)
+
 
 formatter = 'standard'
 JSON_LOG = get_bool_env('JSON_LOG', False)
@@ -52,9 +66,13 @@ LOGGING = {
         'rules': {'level': 'WARNING'},
         'django': {
             'handlers': ['console'],
-            # 'propagate': True,
+            'propagate': True
         },
-        'django_auth_ldap': {'level': os.environ.get('LOG_LEVEL', 'DEBUG')},
+        'django_auth_ldap': {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            'propagate': True
+        },
         "rq.worker": {
             "handlers": ["console"],
             "level": os.environ.get('LOG_LEVEL', 'INFO'),
@@ -262,8 +280,8 @@ ALLOWED_HOSTS = ['*']
 
 # Auth modules
 AUTH_USER_MODEL = 'users.User'
-AUTHENTICATION_BACKENDS = ['rules.permissions.ObjectPermissionBackend', 'django.contrib.auth.backends.ModelBackend',]
-USE_USERNAME_FOR_LOGIN = False
+AUTHENTICATION_BACKENDS = ['django_auth_ldap.backend.LDAPBackend']
+USE_USERNAME_FOR_LOGIN = True
 
 DISABLE_SIGNUP_WITHOUT_LINK = get_bool_env('DISABLE_SIGNUP_WITHOUT_LINK', False)
 

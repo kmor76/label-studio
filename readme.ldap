@@ -1,0 +1,32 @@
+Ubuntu
+
+Start ldap
+    docker run --name ldap -d -p 10389:10389 openmicroscopy/apacheds
+    AUTH_LDAP_BIND_DN = 'uid=admin,ou=system'
+    AUTH_LDAP_BIND_PASSWORD = 'secret'
+    add user:
+        dn: uid=kmor,ou=users,ou=system
+
+
+Install python and libs
+    sudo apt install python3.9
+    sudo apt-get install python3.9-distutils
+    sudo apt-get install python3.9-dev
+    sudo apt-get install libsasl2-dev python-dev libldap2-dev libssl-dev
+    python3.9 -m pip install django-auth-ldap
+    python3.9 -m pip install -U attr
+    python3.9 -m pip install -U attrs
+    python3.9 -m pip install cffi
+
+Run label-studio
+    git clone https://github.com/kmor76/label-studio.git
+    cd ./label-studio
+    git checkout ldap
+    modify label_studio/core/settings/base.py according branch diff
+    python3.9 label_studio/manage.py runserver 0.0.0.0:8080
+
+Check: You should see success ldap auth in the server logs. Properties for group don't added. Thus will be exception regarding membership
+
+
+
+

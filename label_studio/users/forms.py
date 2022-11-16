@@ -45,7 +45,7 @@ class LoginForm(forms.Form):
 
         # regular access
         if user is None:
-            user = auth.authenticate(email=email, password=password)
+            user = auth.authenticate(username=email, password=password)
 
         if user and user.is_active:
             persist_session = cleaned.get('persist_session', False)

@@ -15,11 +15,17 @@ if INACTIVITY_SESSION_TIMEOUT_ENABLED:
 
 ADD_DEFAULT_ML_BACKENDS = False
 
-LOGGING['root']['level'] = get_env('LOG_LEVEL', 'WARNING')
+# LOGGING['root']['level'] = get_env('LOG_LEVEL', 'WARNING')
+#
+# DEBUG = get_bool_env('DEBUG', False)
+#
+# DEBUG_PROPAGATE_EXCEPTIONS = get_bool_env('DEBUG_PROPAGATE_EXCEPTIONS', False)
 
-DEBUG = get_bool_env('DEBUG', False)
+LOGGING['root']['level'] = 'DEBUG'
 
-DEBUG_PROPAGATE_EXCEPTIONS = get_bool_env('DEBUG_PROPAGATE_EXCEPTIONS', False)
+DEBUG = True
+
+DEBUG_PROPAGATE_EXCEPTIONS = True
 
 SESSION_COOKIE_SECURE = False
 
