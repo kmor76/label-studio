@@ -23,6 +23,8 @@ Run label-studio
     cd ./label-studio
     git checkout ldap
     modify label_studio/core/settings/base.py according branch diff
+    python3.9 -m pip install -e .
+    python3.9 label_studio/manage.py migrate
     python3.9 label_studio/manage.py runserver 0.0.0.0:8080
 
 Check: You should see success ldap auth in the server logs. Properties for group don't added. Thus will be exception regarding membership
